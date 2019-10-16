@@ -23,7 +23,7 @@ my_image_translated_uncropped = translate_image(my_image, 0.1, 0.2, crop=False)
 imshow(my_image_translated, my_image_translated_uncropped, mode='BGR')
 ```
 
-![translated-image](example/lenna_translated.png)
+![translated-image](example/lenna_rotated.png)
 
 ### Rotation
 
@@ -33,7 +33,7 @@ my_image_rotated_uncropped = rotate_image(my_image, 30, crop=False)
 imshow(my_image_rotated, my_image_rotated_uncropped, mode='BGR')
 ```
 
-![rotated-image](example/lenna_translated.png)
+![rotated-image](example/lenna_cropped.png)
 
 ### Cropping
 

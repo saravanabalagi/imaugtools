@@ -58,6 +58,37 @@ from imaugtools import translate_image, rotate_image
 ```
 - `imshow` function used here is from [imshowtools](https://github.com/saravanabalagi/imshowtools) library
 
+## Advanced Usage
+
+### Strided Translation
+
+Strided translation is very powerful image augmentation techniques used in training neural networks.
+
+`tx_max = 1` and `ty_max = 1` is equivalent to a stride of 1 in both directions. After you specify `tx_max`, you can specify `tx` (translation in x-axis) from -`tx_max` to +`tx_max`. The same applies to `ty` and `ty_max`.
+
+```py
+my_images_translated = []
+for j in range(-1, 2):
+    for i in range(-1, 2):
+        my_images_translated.append(translate_image(my_image, i, j, tx_max=1, ty_max=1))
+imshow(*my_images_translated, mode='BGR')
+```
+![stride-1-translation](example/lenna_stride_1.png)
+
+
+
+`tx_max = 0.5` and `ty_max = 0.5` is equivalent to a stride of 0.5 in both directions 
+
+```py
+my_images_translated = []
+for j in range(-2, 3):
+    for i in range(-2, 3):
+        my_images_translated.append(translate_image(my_image, i/4, j/4, tx_max=0.5, ty_max=0.5))
+imshow(*my_images_translated, mode='BGR')
+```
+![stride-0.5-translation](example/lenna_stride_0.5.png)
+
+
 ## Contributing
 
 Pull requests are very welcome.

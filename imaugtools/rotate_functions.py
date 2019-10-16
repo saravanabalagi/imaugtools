@@ -5,7 +5,7 @@ from imaugtools.helper_functions import get_largest_rotated_rectangle
 from imaugtools.crop_functions import crop_around_center
 
 
-def rotate_image(image, angle, crop=False):
+def rotate_image(image, angle, crop=True):
     """
     Rotates an OpenCV 2 / NumPy image about it's centre by the given angle
     (in degrees). The returned image will be large enough to hold the entire

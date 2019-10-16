@@ -28,7 +28,7 @@ imshow(my_image_translated, my_image_translated_uncropped, mode='BGR')
 ### Rotation
 
 ```py
-my_image_rotated = rotate_image(my_image, 30)
+my_image_rotated = rotate_image(my_image, 30) # angle in degrees
 my_image_rotated_uncropped = rotate_image(my_image, 30, crop=False)
 imshow(my_image_rotated, my_image_rotated_uncropped, mode='BGR')
 ```
@@ -38,8 +38,8 @@ imshow(my_image_rotated, my_image_rotated_uncropped, mode='BGR')
 ### Cropping
 
 ```py
-my_image_center_cropped = center_crop(my_image, (200, 200))
-my_image_cropped_around_center = crop_around_center(my_image, 200, 200)
+my_image_center_cropped = center_crop(my_image, (150, 200))
+my_image_cropped_around_center = crop_around_center(my_image, (150, 200))
 imshow(my_image_center_cropped, my_image_cropped_around_center, mode='BGR')
 ```
 

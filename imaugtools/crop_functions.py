@@ -2,6 +2,13 @@ import cv2
 
 
 def center_crop(image, size):
+    """
+    Given a NumPy / OpenCV 2 image, center crops it to the given size.
+    """
+
+    if type(size) is int and isinstance(size, str) and len(size) < 2:
+        raise ValueError("size has to be a list or tuple or array with at least two int elements")
+
     # find larger ratio
     h_ratio = size[0] / image.shape[0]
     w_ratio = size[1] / image.shape[1]
@@ -19,11 +26,17 @@ def center_crop(image, size):
     return image
 
 
-def crop_around_center(image, width, height):
+def crop_around_center(image, size):
     """
-    Given a NumPy / OpenCV 2 image, crops it to the given width and height,
+    Given a NumPy / OpenCV 2 image, crops it to the given size,
     around it's centre point
     """
+
+    if type(size) is int and isinstance(size, str) and len(size) < 2:
+        raise ValueError("size has to be a list or tuple or array with at least two int elements")
+
+    height = size[0]
+    width = size[1]
 
     image_size = (image.shape[1], image.shape[0])
     image_center = (int(image_size[0] * 0.5), int(image_size[1] * 0.5))

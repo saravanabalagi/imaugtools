@@ -75,6 +75,6 @@ def rotate_image(image, angle, crop=True):
         image_height = image.shape[0]
         image_width = image.shape[1]
         wr, hr = get_largest_rotated_rectangle(image_width, image_height, np.radians(angle))
-        result = crop_around_center(result, wr, hr)
+        result = crop_around_center(result, (hr, wr))
 
     return result

@@ -50,6 +50,14 @@ print(my_image_center_cropped.shape, my_image_cropped_around_center.shape)
 # Output: (200, 200, 3) (200, 200, 3)
 ```
 
+### Note
+
+- Import the above functions from `imaugtools` like,
+```py
+from imaugtools import translate_image, rotate_image
+```
+- `imshow` function used here is from [imshowtools](https://github.com/saravanabalagi/imshowtools) library
+
 ## Contributing
 
 Pull requests are very welcome.

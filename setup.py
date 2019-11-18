@@ -1,5 +1,6 @@
 import pathlib
 from setuptools import setup
+from .imaugtools import __version__
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -10,7 +11,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="imaugtools",
-    version="0.0.1",
+    version=__version__,
     description="imaugtools contains tools used for image augmentation: translate, rotate, crop. This library is for you if you do NOT want to stretch or skew, or pad pixels when doing any of these operations.",
     long_description=README,
     long_description_content_type="text/markdown",

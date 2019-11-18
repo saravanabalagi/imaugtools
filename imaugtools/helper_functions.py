@@ -1,17 +1,39 @@
 import numpy as np
 
 
-def get_largest_rotated_rectangle(w, h, angle):
+def get_dtype(image: np.ndarray):
+    dtype = type(image)
+    if hasattr(image, 'dtype'):
+        if type(image.dtype) == np.dtype:
+            dtype = image.dtype
+        else:
+            dtype = image.dtype.as_numpy_dtype
+    return dtype
+
+
+def convert_tensor_to_numpy_if_possible(image: np.ndarray) -> np.ndarray:
+    if(hasattr(image, 'dtype') and
+            type(image.dtype) != np.dtype and
+            hasattr(image, 'numpy')):
+        return image.numpy()
+    return image
+
+
+def get_largest_rotated_rectangle(height: int, width: int, angle: int) -> (int, int):
     """
     Given a rectangle of size wxh that has been rotated by 'angle' (in
     radians), computes the width and height of the largest possible
     axis-aligned rectangle (maximal area) within the rotated rectangle.
+    Arguments:
+        w = width
+        h = height
+        angle = radians
     """
-    if w <= 0 or h <= 0:
+    if width <= 0 or height <= 0:
         return 0, 0
 
-    width_is_longer = w >= h
-    side_long, side_short = (w, h) if width_is_longer else (h, w)
+    width_is_longer = width >= height
+    side_long, side_short = (width, height) if width_is_longer else (height, width)
 
     # since the solutions for angle, -angle and 180-angle are all the same,
     # if suffices to look at the first quadrant and the absolute values of sin,cos:
@@ -24,6 +46,6 @@ def get_largest_rotated_rectangle(w, h, angle):
     else:
         # fully constrained case: crop touches all 4 sides
         cos_2a = cos_a*cos_a - sin_a*sin_a
-        wr, hr = (w*cos_a - h*sin_a)/cos_2a, (h*cos_a - w*sin_a)/cos_2a
+        wr, hr = (width * cos_a - height * sin_a) / cos_2a, (height * cos_a - width * sin_a) / cos_2a
 
-    return wr, hr
+    return hr, wr

@@ -1,32 +1,37 @@
 import cv2
 import numpy as np
 
-from imaugtools.helper_functions import get_largest_rotated_rectangle
+from imaugtools.helper_functions import get_largest_rotated_rectangle, convert_tensor_to_numpy_if_possible
 from imaugtools.crop_functions import crop_around_center
 
 
-def rotate_image(image, angle, crop=True):
+def rotate_image(image: np.ndarray, angle: int, crop=True) -> np.ndarray:
     """
     Rotates an OpenCV 2 / NumPy image about it's centre by the given angle
     (in degrees). The returned image will be large enough to hold the entire
     new image, with a black background
+    Arguments:
+        image: Input Image
+        angle: Degrees to rotate
+        crop: Returns original sized image with black pixels if true
     """
 
-    # Get the image size
-    # No that's not an error - NumPy stores image matricies backwards
-    image_size = (image.shape[1], image.shape[0])
-    image_center = tuple(np.array(image_size) / 2)
+    # For tensor processing
+    image = convert_tensor_to_numpy_if_possible(image)
+
+    # Get the image width and height
+    # remember 0th dim is height and 1st is width
+    width = image.shape[1]
+    height = image.shape[0]
+    image_center = (height/2, width/2)
 
     # Convert the OpenCV 3x2 rotation matrix to 3x3
-    rot_mat = np.vstack(
-        [cv2.getRotationMatrix2D(image_center, angle, 1.0), [0, 0, 1]]
-    )
-
+    rot_mat = np.vstack([cv2.getRotationMatrix2D(image_center, angle, 1.0), [0, 0, 1]])
     rot_mat_notranslate = np.matrix(rot_mat[0:2, 0:2])
 
     # Shorthand for below calcs
-    image_w2 = image_size[0] * 0.5
-    image_h2 = image_size[1] * 0.5
+    image_w2 = width * 0.5
+    image_h2 = height * 0.5
 
     # Obtain the rotated coordinates of the image corners
     rotated_coords = [
@@ -63,6 +68,11 @@ def rotate_image(image, angle, crop=True):
     # Compute the tranform for the combined rotation and translation
     affine_mat = (np.matrix(trans_mat) * np.matrix(rot_mat))[0:2, :]
 
+    # For tensor processing
+    if hasattr(image, 'dtype'):
+        if type(image.dtype) != np.dtype:
+            image = image.numpy()
+
     # Apply the transform
     result = cv2.warpAffine(
         image,
@@ -74,7 +84,7 @@ def rotate_image(image, angle, crop=True):
     if crop:
         image_height = image.shape[0]
         image_width = image.shape[1]
-        wr, hr = get_largest_rotated_rectangle(image_width, image_height, np.radians(angle))
+        hr, wr = get_largest_rotated_rectangle(image_height, image_width, np.radians(angle))
         result = crop_around_center(result, (hr, wr))
 
     return result

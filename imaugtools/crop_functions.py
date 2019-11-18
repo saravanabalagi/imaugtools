@@ -1,13 +1,23 @@
 import cv2
+import numpy as np
+from typing import Union
+
+from imaugtools.helper_functions import convert_tensor_to_numpy_if_possible
 
 
-def center_crop(image, size):
+def center_crop(image: np.ndarray, size: Union[tuple, list, np.ndarray]) -> np.ndarray:
     """
     Given a NumPy / OpenCV 2 image, center crops it to the given size.
+    Arguments:
+        image: Input Image
+        size: [height, width]
     """
 
     if type(size) is int and isinstance(size, str) and len(size) < 2:
         raise ValueError("size has to be a list or tuple or array with at least two int elements")
+
+    # For tensor processing
+    image = convert_tensor_to_numpy_if_possible(image)
 
     # find larger ratio
     h_ratio = size[0] / image.shape[0]
@@ -26,14 +36,20 @@ def center_crop(image, size):
     return image
 
 
-def crop_around_center(image, size):
+def crop_around_center(image: np.ndarray, size: Union[tuple, list, np.ndarray]) -> np.ndarray:
     """
     Given a NumPy / OpenCV 2 image, crops it to the given size,
     around it's centre point
+    Arguments:
+        image: Input Image
+        size: [height, width]
     """
 
     if type(size) is int and isinstance(size, str) and len(size) < 2:
         raise ValueError("size has to be a list or tuple or array with at least two int elements")
+
+    # For tensor processing
+    image = convert_tensor_to_numpy_if_possible(image)
 
     height = size[0]
     width = size[1]

@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from imaugtools.helper_functions import get_largest_rotated_rectangle, convert_tensor_to_numpy_if_possible
+from imaugtools.helper_functions import _get_largest_rotated_rectangle, _convert_tensor_to_numpy_if_possible
 from imaugtools.crop_functions import crop_around_center
 
 
@@ -10,14 +10,16 @@ def rotate_image(image: np.ndarray, angle: int, crop=True) -> np.ndarray:
     Rotates an OpenCV 2 / NumPy image about it's centre by the given angle
     (in degrees). The returned image will be large enough to hold the entire
     new image, with a black background
-    Arguments:
+    Parameters:
         image: Input Image
         angle: Degrees to rotate
         crop: Returns original sized image with black pixels if true
+    Returns:
+        image: Output Image, same size if crop is True, else cropped
     """
 
     # For tensor processing
-    image = convert_tensor_to_numpy_if_possible(image)
+    image = _convert_tensor_to_numpy_if_possible(image)
 
     # Get the image width and height
     # remember 0th dim is height and 1st is width
@@ -84,7 +86,7 @@ def rotate_image(image: np.ndarray, angle: int, crop=True) -> np.ndarray:
     if crop:
         image_height = image.shape[0]
         image_width = image.shape[1]
-        hr, wr = get_largest_rotated_rectangle(image_height, image_width, np.radians(angle))
+        hr, wr = _get_largest_rotated_rectangle(image_height, image_width, np.radians(angle))
         result = crop_around_center(result, (hr, wr))
 
     return result

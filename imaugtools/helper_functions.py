@@ -1,7 +1,8 @@
 import numpy as np
+from typing import Union
 
 
-def get_dtype(image: np.ndarray):
+def _get_dtype(image: np.ndarray) -> Union[str, np.dtype]:
     dtype = type(image)
     if hasattr(image, 'dtype'):
         if type(image.dtype) == np.dtype:
@@ -11,7 +12,7 @@ def get_dtype(image: np.ndarray):
     return dtype
 
 
-def convert_tensor_to_numpy_if_possible(image: np.ndarray) -> np.ndarray:
+def _convert_tensor_to_numpy_if_possible(image: np.ndarray) -> np.ndarray:
     if(hasattr(image, 'dtype') and
             type(image.dtype) != np.dtype and
             hasattr(image, 'numpy')):
@@ -19,18 +20,20 @@ def convert_tensor_to_numpy_if_possible(image: np.ndarray) -> np.ndarray:
     return image
 
 
-def get_largest_rotated_rectangle(height: int, width: int, angle: int) -> (int, int):
+def _get_largest_rotated_rectangle(height: int, width: int, angle: int) -> (float, float):
     """
     Given a rectangle of size wxh that has been rotated by 'angle' (in
     radians), computes the width and height of the largest possible
     axis-aligned rectangle (maximal area) within the rotated rectangle.
-    Arguments:
-        w = width
-        h = height
-        angle = radians
+    Parameters:
+        height: Input height in pixels
+        width: Input width in pixels
+        angle: radians
+    Returns:
+        (float, float): Maximal height and width that can be cropped around the center
     """
     if width <= 0 or height <= 0:
-        return 0, 0
+        return 0., 0.
 
     width_is_longer = width >= height
     side_long, side_short = (width, height) if width_is_longer else (height, width)
@@ -42,7 +45,7 @@ def get_largest_rotated_rectangle(height: int, width: int, angle: int) -> (int, 
         # half constrained case: two crop corners touch the longer side,
         #   the other two corners are on the mid-line parallel to the longer line
         x = 0.5*side_short
-        wr, hr = (x/sin_a,x/cos_a) if width_is_longer else (x/cos_a, x/sin_a)
+        wr, hr = (x/sin_a, x/cos_a) if width_is_longer else (x/cos_a, x/sin_a)
     else:
         # fully constrained case: crop touches all 4 sides
         cos_2a = cos_a*cos_a - sin_a*sin_a

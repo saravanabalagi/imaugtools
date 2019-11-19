@@ -1,22 +1,24 @@
 import numpy as np
-from imaugtools.helper_functions import get_dtype, convert_tensor_to_numpy_if_possible
+from imaugtools.helper_functions import _get_dtype, _convert_tensor_to_numpy_if_possible
 
 
 def translate_image(image: np.ndarray, tx: int, ty: int, tx_max=None, ty_max=None, crop=True) -> np.ndarray:
 
     """
     Given a NumPy / OpenCV 2 image, center crops it to the given size.
-    Arguments:
+    Parameters:
         image: Input Image: numpy array, eagertensor or cv2 mat
         tx: can vary from 0 to tx_max
         ty: can vary from 0 to ty_max
         tx_max: max translation window size on left and right
         ty_max: max translation window size on top and bottom
         crop: can be false when tx and ty are not specified
+    Returns:
+        image: Output Image, same size if crop is True, else cropped
     """
 
     # For tensor processing
-    image = convert_tensor_to_numpy_if_possible(image)
+    image = _convert_tensor_to_numpy_if_possible(image)
 
     if not crop and ty_max is not None and tx_max is not None:
         raise ValueError("Can't have crop=False when tx_max or ty_max is specified")
@@ -55,7 +57,7 @@ def translate_image(image: np.ndarray, tx: int, ty: int, tx_max=None, ty_max=Non
 
     if not crop:
         tx *= -1
-        uncropped_image = np.zeros(image.shape, dtype=get_dtype(image))
+        uncropped_image = np.zeros(image.shape, dtype=_get_dtype(image))
 
         if ty > 0: top_offset_u = 0
         else: top_offset_u = image.shape[0] - size[0]

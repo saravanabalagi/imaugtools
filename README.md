@@ -61,14 +61,14 @@ Aspect ratio preserving center crop and crop around center:
 
 ```py
 print(my_image_center_cropped.shape, my_image_cropped_around_center.shape)
-# Output: (200, 200, 3) (200, 200, 3)
+# Output: (150, 200, 3) (150, 200, 3)
 ```
 
 ## Advanced Usage
 
 ### Strided Translation
 
-Strided translation is very powerful image augmentation techniques used in training neural networks.
+Strided translation is one of the powerful image augmentation techniques used in training neural networks.
 
 `tx_max = 1` and `ty_max = 1` is equivalent to a stride of 1 in both directions. After you specify `tx_max`, you can specify `tx` (translation in x-axis) from -`tx_max` to +`tx_max`. The same applies to `ty` and `ty_max`.
 
@@ -106,4 +106,4 @@ Pull requests are very welcome.
 
 ## Licence
 
-Please see attached [Licence](LICENSE)
+Please see attached [Licence](https://github.com/saravanabalagi/imaugtools/blob/master/LICENSE)
